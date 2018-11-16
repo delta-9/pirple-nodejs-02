@@ -5,5 +5,5 @@
  ## Quickstart
  - Checkout this repo
  - run node index.js
- - request localhost:5555/hello
+ - request http://localhost:5555/hello or https://localhost:5556/hello
  - enjoy :)

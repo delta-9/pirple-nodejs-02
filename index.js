@@ -18,13 +18,13 @@ httpsServer.listen(config.httpsPort);
 // Frontpage
 router.add('get', '', function(data, response) {
   var payload = {
-    message: 'Homework Assignment #1: Please head to /hello',
+    message: 'Homework Assignment #1: Please post to /hello',
   };
   response(200, payload);
 });
 
 // Hello handler
-router.add('get', 'hello', function(data, response) {
+router.add('post', 'hello', function(data, response) {
   var payload = {
     message: 'Hello Pirple community!',
   };

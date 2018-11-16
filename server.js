@@ -1,6 +1,6 @@
-var url = require('url');
-var StringDecoder = require('string_decoder').StringDecoder;
-var router = require('./router');
+const url = require('url');
+const StringDecoder = require('string_decoder').StringDecoder;
+const router = require('./router');
 
 /**
  * Handler for an http server.
@@ -9,24 +9,24 @@ var router = require('./router');
  */
 function server(req, res) {
   // get the URL and parse it.
-  var parsedUrl = url.parse(req.url, true);
+  const parsedUrl = url.parse(req.url, true);
 
   // get the path.
-  var path = parsedUrl.pathname.replace(/^\/+|\/+$/g, '');
+  const path = parsedUrl.pathname.replace(/^\/+|\/+$/g, '');
 
   // get the query string as an object
-  var queryStringObject = parsedUrl.query;
+  const queryStringObject = parsedUrl.query;
 
   // Get the payload, if any
-  var decoder = new StringDecoder('utf-8');
-  var buffer = '';
+  const decoder = new StringDecoder('utf-8');
+  let buffer = '';
   req.on('data', function(data) {
     buffer += decoder.write(data);
   });
   req.on('end', function() {
     buffer += decoder.end();
 
-    var data = {
+    const data = {
       req: req,
       path: path,
       queryStringObject: queryStringObject,

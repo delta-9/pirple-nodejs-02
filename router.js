@@ -1,12 +1,12 @@
 
 
-var _handlers = {
+const _handlers = {
   default: function(data, response) {
     response(404);
   }
 };
 
-var router = {};
+const router = {};
 
 /**
  * Add a route handler.

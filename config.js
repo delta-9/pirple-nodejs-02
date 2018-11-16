@@ -1,5 +1,5 @@
 // container for all the environments
-var environments = {};
+const environments = {};
 
 // Staging (default) environment
 environments.staging = {
@@ -15,8 +15,8 @@ environments.production = {
   envName: 'production',
 };
 
-var currentEnvironment = typeof(process.env.NODE_ENV) === 'string' ? process.env.NODE_ENV.toLowerCase() : '';
+const currentEnvironment = typeof(process.env.NODE_ENV) === 'string' ? process.env.NODE_ENV.toLowerCase() : '';
 
-var environmentToExport = typeof(environments[currentEnvironment]) !== 'undefined' ? environments[currentEnvironment] : environments.staging;
+const environmentToExport = typeof(environments[currentEnvironment]) !== 'undefined' ? environments[currentEnvironment] : environments.staging;
 
 module.exports = environmentToExport;

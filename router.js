@@ -2,6 +2,9 @@
 
 const _handlers = {
   default: function(data, response) {
+    if (data.method !== 'get') {
+      return response(405);
+    }
     response(404);
   }
 };
@@ -60,7 +63,7 @@ router.route = function(path, data, res) {
  * @param {Object} res
  */
 function response(res) {
-  return function(status, payload) {
+  return function(status, payload = {}) {
     res.setHeader('Content-Type', 'application/json');
     res.writeHead(status);
     res.end(JSON.stringify(payload));

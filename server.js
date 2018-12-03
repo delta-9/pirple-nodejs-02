@@ -1,7 +1,7 @@
 const url = require('url');
 const StringDecoder = require('string_decoder').StringDecoder;
 const router = require('./router');
-
+const helpers = require('./lib/helpers');
 /**
  * Handler for an http server.
  * @param {Object} req
@@ -32,7 +32,13 @@ function server(req, res) {
       queryStringObject: queryStringObject,
       method: req.method.toLowerCase(),
       headers: req.headers,
-      payload: buffer,
+      payload: helpers.parseJsonToObject(buffer),
+      getString: function(name, defaultValue = false) {
+        return this.payload && this.payload[name] && String(this.payload[name]).trim().length ? String(this.payload[name]).trim() : defaultValue;
+      },
+      getBoolean: function(name) {
+        return this.payload && typeof(this.payload[name]) === 'boolean' && this.payload[name] ? true : false;
+      },
     };
 
     // Route the request.

@@ -5,7 +5,7 @@ const _handlers = {
     if (data.method !== 'get') {
       return response(405);
     }
-    response(404);
+    return response(404);
   }
 };
 
@@ -30,6 +30,33 @@ router.add = function(method, path, handler) {
   }
   _handlers[method][path] = handler;
 };
+
+/**
+ * Shortcut to add the full CRUD handlers.
+ * (create, read, update, delete)
+ *
+ * @param {String} path
+ *   The path of the handler.
+ * @param {function} handlers
+ *   An object containing the function to handle the CRUD routes.
+ *   Allow create, read, update, delete and post, get, put, delete.
+ */
+router.addCRUD = function(path, handlers) {
+  // Since the method is called add CRUD allow CRUD handlers...
+  if (
+    !(handlers.post || handlers.create) ||
+    !(handlers.get || handlers.read) ||
+    !(handlers.put || handlers.update) ||
+    !handlers.delete
+  ) {
+    throw new Error(`Missing one or more CRUD handler in ${path} route.`);
+  }
+
+  router.add('post', path, handlers.post || handlers.create);
+  router.add('get', path, handlers.get || handlers.read);
+  router.add('put', path, handlers.put || handlers.update);
+  router.add('delete', path, handlers.delete);
+}
 
 /**
  * Override the default handler.

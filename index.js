@@ -5,6 +5,7 @@ const server = require('./server');
 const router = require('./router');
 const config = require('./config');
 const users = require('./handlers/users');
+const tokens = require('./handlers/tokens');
 
 const httpServer = http.createServer(server);
 httpServer.listen(config.httpPort);
@@ -23,11 +24,11 @@ router.add('get', '', function(data, response) {
   response(200, payload);
 });
 
-// Users handler
-router.add('post', 'users', users.post);
-router.add('get', 'users', users.get);
-router.add('put', 'users', users.put);
-router.add('delete', 'users', users.delete);
+// Users handlers
+router.addCRUD('users', users);
+
+// Tokens handlers
+router.addCRUD('tokens', tokens);
 
 // Default handler
 router.addDefault(function(data, response) {
@@ -37,7 +38,7 @@ router.addDefault(function(data, response) {
     });
   }
   const payload = {
-    message: 'Nothing here',
+    message: '404 - Nothing here',
   };
-  response(404, payload);
+  return response(404, payload);
 });

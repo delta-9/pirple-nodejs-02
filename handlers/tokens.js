@@ -109,7 +109,4 @@ tokens.delete = function(data, response) {
   });
 };
 
-tokens.verify = function(id, phone, callback) {
-}
-
 module.exports = tokens;

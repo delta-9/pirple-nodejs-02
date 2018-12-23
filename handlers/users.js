@@ -53,6 +53,11 @@ users.get = function(data, response) {
   if (!phone) {
     return response(400, {error: 'Missing required field or field are invalid.'});
   }
+
+  if (!data.authenticated || data.user.phone !== phone) {
+    return response(403, {error: 'Access denied'});
+  }
+
   fileStore.read('users', phone, function (err, userData) {
     if (err || !userData) {
       return response(404);
@@ -68,6 +73,11 @@ users.put = function(data, response) {
   if (!phone) {
     return response(400, {error: 'Missing required field or field are invalid.'});
   }
+
+  if (!data.authenticated || data.user.phone !== phone) {
+    return response(403, {error: 'Access denied'});
+  }
+
   const firstName = data.getString('firstName');
   const lastName = data.getString('lastName');
   const password = data.getString('password');
@@ -104,6 +114,11 @@ users.delete = function(data, response) {
   if (!phone) {
     return response(400, {error: 'Missing required field or field are invalid.'});
   }
+
+  if (!data.authenticated || data.user.phone !== phone) {
+    return response(403, {error: 'Access denied'});
+  }
+
   fileStore.read('users', phone, function (err, userData) {
     if (err || !userData) {
       return response(404);
@@ -117,6 +132,7 @@ users.delete = function(data, response) {
       return response(200);
     });
   });
+
 };
 
 module.exports = users;

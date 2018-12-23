@@ -6,6 +6,7 @@ const router = require('./router');
 const config = require('./config');
 const users = require('./handlers/users');
 const tokens = require('./handlers/tokens');
+const checks = require('./handlers/checks');
 
 const httpServer = http.createServer(server);
 httpServer.listen(config.httpPort);
@@ -29,6 +30,9 @@ router.addCRUD('users', users);
 
 // Tokens handlers
 router.addCRUD('tokens', tokens);
+
+// Tokens handlers
+router.addCRUD('checks', checks);
 
 // Default handler
 router.addDefault(function(data, response) {

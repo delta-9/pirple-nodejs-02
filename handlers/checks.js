@@ -1,5 +1,5 @@
 
-const config = require('../config');
+const config = require('../lib/config');
 const fileStore = require('../lib/fileStore');
 const helpers = require('../lib/helpers');
 
@@ -35,6 +35,7 @@ checks.post = function(data, response) {
     protocol,
     url,
     method,
+    successCodes,
     timeoutSeconds
   };
 

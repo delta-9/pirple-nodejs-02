@@ -58,14 +58,9 @@ users.get = function(data, response) {
     return response(403, {error: 'Access denied'});
   }
 
-  fileStore.read('users', phone, function (err, userData) {
-    if (err || !userData) {
-      return response(404);
-    }
-
-    delete userData.hashedPassword;
-    return response(200, userData);
-  });
+  const userData = Object.assign({}, data.user);
+  delete userData.hashedPassword;
+  return response(200, userData);
 };
 
 users.put = function(data, response) {
@@ -132,7 +127,6 @@ users.delete = function(data, response) {
       return response(200);
     });
   });
-
 };
 
 module.exports = users;

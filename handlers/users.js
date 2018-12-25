@@ -54,11 +54,11 @@ users.get = function(data, response) {
     return response(400, {error: 'Missing required field or field are invalid.'});
   }
 
-  if (!data.authenticated || data.user.phone !== phone) {
+  if (!data.authenticated || data.authenticatedUser.phone !== phone) {
     return response(403, {error: 'Access denied'});
   }
 
-  const userData = Object.assign({}, data.user);
+  const userData = Object.assign({}, data.authenticatedUser);
   delete userData.hashedPassword;
   return response(200, userData);
 };
@@ -69,7 +69,7 @@ users.put = function(data, response) {
     return response(400, {error: 'Missing required field or field are invalid.'});
   }
 
-  if (!data.authenticated || data.user.phone !== phone) {
+  if (!data.authenticated || data.authenticatedUser.phone !== phone) {
     return response(403, {error: 'Access denied'});
   }
 
@@ -110,7 +110,7 @@ users.delete = function(data, response) {
     return response(400, {error: 'Missing required field or field are invalid.'});
   }
 
-  if (!data.authenticated || data.user.phone !== phone) {
+  if (!data.authenticated || data.authenticatedUser.phone !== phone) {
     return response(403, {error: 'Access denied'});
   }
 

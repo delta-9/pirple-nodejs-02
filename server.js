@@ -35,7 +35,7 @@ function server(req, res) {
       headers: req.headers,
       payload: helpers.parseJsonToObject(buffer),
       authenticated: false,
-      user: null,
+      authenticatedUser: null,
       getString: function(name, defaultValue = false) {
         return this.payload && this.payload[name] && String(this.payload[name]).trim().length ? String(this.payload[name]).trim() : defaultValue;
       },
@@ -56,12 +56,12 @@ function server(req, res) {
       return router.route(path, data, res);
     }
 
-    authenticateUser(data.headers.token, function(user) {
-      if (!user) {
+    authenticateUser(data.headers.token, function(authenticatedUser) {
+      if (!authenticatedUser) {
         return router.route(path, data, res);
       }
       data.authenticated = true;
-      data.user = user;
+      data.authenticatedUser = authenticatedUser;
       return router.route(path, data, res);
     });
   });

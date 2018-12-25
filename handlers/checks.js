@@ -22,7 +22,7 @@ checks.post = function(data, response) {
     return response(403, {error: 'Access denied'});
   }
 
-  const userChecks = typeof(data.user.checks) === 'object' && data.user.checks instanceof Array ? data.user.checks : [];
+  const userChecks = typeof(data.authenticatedUser.checks) === 'object' && data.authenticatedUser.checks instanceof Array ? data.authenticatedUser.checks : [];
   if (userChecks.length >= config.maxChecks) {
     return response(400, {error: `The user has the maximum number of checks (${config.maxChecks})`});
   }
@@ -31,7 +31,7 @@ checks.post = function(data, response) {
 
   var checkObject = {
     id: checkId,
-    userPhone: data.user.phone,
+    userPhone: data.authenticatedUser.phone,
     protocol,
     url,
     method,
@@ -42,9 +42,9 @@ checks.post = function(data, response) {
     if (err) {
       return response(500, {error: 'Could not create the new check'});
     }
-    data.user.checks = userChecks;
-    data.user.checks.push(checkId);
-    fileStore.update('users', data.user.phone, data.user, function(err) {
+    data.authenticatedUser.checks = userChecks;
+    data.authenticatedUser.checks.push(checkId);
+    fileStore.update('users', data.authenticatedUser.phone, data.authenticatedUser, function(err) {
       if (err) {
         return response(500, {error: 'Could not update the user with the new check'});
       }
@@ -68,7 +68,7 @@ checks.get = function(data, response) {
       return response(404);
     }
 
-    if (!data.authenticated || data.user.phone !== checkData.userPhone) {
+    if (!data.authenticated || data.authenticatedUser.phone !== checkData.userPhone) {
       return response(403, {error: 'Access denied'});
     }
 
@@ -99,7 +99,7 @@ checks.put = function(data, response) {
       return response(400, {error: 'Check ID did not exists'});
     }
 
-    if (!data.authenticated || data.user.phone !== checkData.userPhone) {
+    if (!data.authenticated || data.authenticatedUser.phone !== checkData.userPhone) {
       return response(403, {error: 'Access denied'});
     }
 
@@ -131,7 +131,7 @@ checks.delete = function(data, response) {
       return response(400, {error: 'Check ID did not exists'});
     }
 
-    if (!data.authenticated || data.user.phone !== checkData.userPhone) {
+    if (!data.authenticated || data.authenticatedUser.phone !== checkData.userPhone) {
       return response(403, {error: 'Access denied'});
     }
 
@@ -141,14 +141,14 @@ checks.delete = function(data, response) {
         return response(500, {error: 'Could not delete the check'});
       }
 
-      const userChecks = typeof(data.user.checks) === 'object' && data.user.checks instanceof Array ? data.user.checks : [];
+      const userChecks = typeof(data.authenticatedUser.checks) === 'object' && data.authenticatedUser.checks instanceof Array ? data.authenticatedUser.checks : [];
       const checkPosition = userChecks.indexOf(id);
       if (checkPosition === -1) {
         return response(500, {error: 'Could not find the check on the user checks, so could not delete it.'});
       }
 
       userChecks.splice(checkPosition, 1);
-      fileStore.update('users', data.user.phone, data.user, function(err) {
+      fileStore.update('users', data.authenticatedUser.phone, data.authenticatedUser, function(err) {
         if (err) {
           return response(500, {error: 'Could not update the user'});
         }

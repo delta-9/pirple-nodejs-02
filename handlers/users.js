@@ -124,6 +124,22 @@ users.delete = function(data, response) {
         return response(500, {error: 'Could not delete the specified user'});
       }
 
+      // Delete the checks associated with the deleted user.
+      const userChecks = typeof(userData.checks) === 'object' && userData.checks instanceof Array ? userData.checks : [];
+      if (!userChecks.length) {
+        return response(200);
+      }
+      let deletionErrors = false;
+      userChecks.forEach(checkId => {
+        fileStore.delete('checks', checkId, function(err) {
+          if (err) {
+            deletionErrors = true;
+          }
+        });
+      });
+      if (deletionErrors) {
+        return response(500, {error: 'Error encountered when attempting to delete the user checks, all user checks might not be deleted'});
+      }
       return response(200);
     });
   });

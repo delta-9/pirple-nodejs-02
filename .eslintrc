@@ -1,11 +1,10 @@
 {
   "env": {
     "node": true,
-    "es6": true,
-    "browser": true
+    "es6": true
   },
   "rules": { },
-  "ecmaFeatures": {
-    "modules": true
+  "parserOptions": {
+    "ecmaVersion": 8
   }
  }

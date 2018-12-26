@@ -4,6 +4,8 @@ const helpers = require('../lib/helpers');
 
 const users = {};
 
+// Required data: phone, firstName, lastName, password, tosAgreement
+// Optional data: None
 users.post = async function(data, response) {
   const firstName = data.getString('firstName');
   const lastName = data.getString('lastName');
@@ -50,6 +52,8 @@ users.post = async function(data, response) {
   response(201);
 };
 
+// Required data: phone
+// Optional data: None
 users.get = function(data, response) {
   // Check the phone number is valid
   const phone = typeof(data.queryStringObject.phone) === 'string' && data.queryStringObject.phone.trim().length === 10 ? data.queryStringObject.phone.trim() : false;
@@ -68,6 +72,8 @@ users.get = function(data, response) {
   response(200, userData);
 };
 
+// Required data: phone
+// Optional data: firstName, lastName, password (at least one must be set)
 users.put = async function(data, response) {
   const phone = data.getString('phone') && data.getString('phone').length === 10 ? data.getString('phone') : false;
   if (!phone) {
@@ -109,6 +115,8 @@ users.put = async function(data, response) {
   response(200);
 };
 
+// Required data: phone
+// Optional data: None
 users.delete = async function(data, response) {
   const phone = typeof(data.queryStringObject.phone) === 'string' && data.queryStringObject.phone.trim().length === 10 ? data.queryStringObject.phone.trim() : false;
   if (!phone) {
